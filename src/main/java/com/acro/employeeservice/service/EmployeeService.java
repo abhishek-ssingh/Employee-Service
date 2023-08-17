@@ -9,6 +9,6 @@ public interface EmployeeService {
 
     EmployeeDto saveEmployee(EmployeeDto employeeDto);
     EmployeeDto getByEmail(String email);
-    EmployeeDto getById(Long id);
+    APIResponseDto getById(Long id);
 
 }

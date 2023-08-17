@@ -21,17 +21,17 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeDto>(savedEmployeeDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("{email}")
-    public ResponseEntity<EmployeeDto> getByEmail(@PathVariable("email") String email){
-        EmployeeDto employeeDto = employeeService.getByEmail(email);
-        return new ResponseEntity<EmployeeDto>(employeeDto, HttpStatus.OK);
-
-    }
+//    @GetMapping("{email}")
+//    public ResponseEntity<EmployeeDto> getByEmail(@PathVariable String email){
+//        EmployeeDto employeeDto = employeeService.getByEmail(email);
+//        return new ResponseEntity<EmployeeDto>(employeeDto, HttpStatus.OK);
+//
+//    }
 
     @GetMapping("{id}")
-    public ResponseEntity<EmployeeDto> getById(@PathVariable("id") Long id){
-        EmployeeDto employeeDto = employeeService.getById(id);
-        return new ResponseEntity<EmployeeDto>(employeeDto, HttpStatus.OK);
+    public ResponseEntity<APIResponseDto> getById(@PathVariable Long id){
+        APIResponseDto apiResponseDto = employeeService.getById(id);
+        return new ResponseEntity<APIResponseDto>(apiResponseDto, HttpStatus.OK);
 
     }
 }

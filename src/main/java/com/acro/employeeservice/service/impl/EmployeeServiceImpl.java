@@ -10,6 +10,7 @@ import com.acro.employeeservice.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
@@ -17,6 +18,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private WebClient webClient;
@@ -51,7 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDto getById(Long id) {
+    public APIResponseDto getById(Long id) {
 
 //        Employee getEmployee = employeeRepository.findById(id).get().orElseThrow(
 //                () -> new ResourceNotFoundException("Employee", "id", Long.toString(id))
@@ -59,18 +63,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee getEmployee = employeeRepository.findById(id).get();
 
-//        DepartmentDto departmentDto = webClient.get()
-//                .uri("http://localhost:8080/departments" + getEmployee.getDepartmentCode())
-//                .retrieve()
-//                .bodyToMono(DepartmentDto.class)
-//                .block();
+//        restTemplate.getForEntity("http://localhost:8080/departments/" + getEmployee.getDepartmentCode(),
+//                DepartmentDto.class);
+
+        DepartmentDto departmentDto = webClient.get()
+                .uri("http://localhost:8080/departments/" + getEmployee.getDepartmentCode())
+                .retrieve()
+                .bodyToMono(DepartmentDto.class)
+                .block();
 
         EmployeeDto employeeDto = modelMapper.map(getEmployee, EmployeeDto.class);
 
-//        APIResponseDto apiResponseDto = new APIResponseDto();
-//        apiResponseDto.setEmployee(employeeDto);
-//        apiResponseDto.setDepartment(departmentDto);
+        APIResponseDto apiResponseDto = new APIResponseDto();
+        apiResponseDto.setEmployee(employeeDto);
+        apiResponseDto.setDepartment(departmentDto);
 
-        return employeeDto;
+        return apiResponseDto;
     }
 }
