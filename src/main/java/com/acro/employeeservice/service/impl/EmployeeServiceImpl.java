@@ -10,7 +10,6 @@ import com.acro.employeeservice.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
@@ -20,10 +19,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
     private WebClient webClient;
+
     @Autowired
     private ModelMapper modelMapper;
     @Override
@@ -57,14 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public APIResponseDto getById(Long id) {
 
-//        Employee getEmployee = employeeRepository.findById(id).get().orElseThrow(
-//                () -> new ResourceNotFoundException("Employee", "id", Long.toString(id))
-//        );
-
         Employee getEmployee = employeeRepository.findById(id).get();
-
-//        restTemplate.getForEntity("http://localhost:8080/departments/" + getEmployee.getDepartmentCode(),
-//                DepartmentDto.class);
 
         DepartmentDto departmentDto = webClient.get()
                 .uri("http://localhost:8080/departments/" + getEmployee.getDepartmentCode())
